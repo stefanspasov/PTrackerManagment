@@ -6,8 +6,12 @@ public class Facade {
 	public IStoryContainer BacklogStoriesContainer;
 	public IStoryContainer IceboxStoriesContainer;
 	
+	
 	protected Facade()
 	{
+		CurrentStoriesContainer = new CurrentStories();
+		BacklogStoriesContainer = new BacklogStories();
+		IceboxStoriesContainer = new IceboxStories();
 	}
 	
 	public static Facade getInstance()
@@ -15,6 +19,7 @@ public class Facade {
 		if(instance == null)
 		{
 			instance = new Facade();
+			
 		}		
 		return instance;
 	}
@@ -31,5 +36,10 @@ public class Facade {
 	public Story[] getIceboxStories()
 	{
 		return IceboxStoriesContainer.getStories();
+	}
+	
+	public String getToken(String URLatt, String methodType, String userInfo )
+	{
+		return ConnectionManager.getResponse(URLatt, methodType, userInfo);
 	}
 }

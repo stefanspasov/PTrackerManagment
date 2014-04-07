@@ -14,6 +14,6 @@ public class CurrentStories implements IStoryContainer {
 		  gson.fromJson(response.toString(), Story[].class);
 		return stories;
 	}
-	catch(Exception e) { return null;}
+	catch(Exception e) { return new Story[]{ new Story() };}
 	}
 }

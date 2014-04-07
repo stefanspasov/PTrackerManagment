@@ -1,5 +1,9 @@
 package com.example.pivotaltrackercommunication;
 
+import org.apache.commons.codec.binary.Base64;
+
+import com.example.pivotaltrackercommunication.services.Facade;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -21,15 +25,20 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+	
 		loginButton = (Button) findViewById(R.id.loginButton);
 		loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+            String URLme = "https://www.pivotaltracker.com/services/v5/me";
             EditText etUsername = (EditText) findViewById(R.id.editTextUsername);
             EditText etPassword = (EditText) findViewById(R.id.editTextPassword);
-            Context.username = etUsername.getText().toString();
-            Context.password = etPassword.getText().toString();
-            Context.token = "92fbbc559c5ed8d576b142a1d4134b65";
+            
+            String authString = etUsername + ":" + etPassword;
+			String authStringEnc = new String(Base64.encodeBase64(authString
+					.getBytes()));
+			
+			Context.token = Facade.getInstance().getToken(URLme, "GET", "Base " + authStringEnc).substring(16, 48);
+			
             Intent openMenu = new Intent("android.intent.action.MENU");
             startActivity(openMenu);
             }
